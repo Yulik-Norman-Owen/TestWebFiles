@@ -1,3 +1,6 @@
+import math
+
+from django.core.paginator import Paginator, EmptyPage
 from django.shortcuts import render, HttpResponse
 from django.http import StreamingHttpResponse
 import os
@@ -5,10 +8,10 @@ import os
 from TestWebFiles.settings import BASE_DIR
 
 
-def index(request):
+def index(request, page=1):
     allFileDirRoot = os.path.join(BASE_DIR, "FileFolder")
     if request.method == "POST":
-        fileToUpload=request.FILES.get("fileToUpload","")
+        fileToUpload = request.FILES.get("fileToUpload", "")
         fileName = fileToUpload.name
         filePath = os.path.join(allFileDirRoot, fileName)
         if os.path.exists(filePath):
@@ -19,7 +22,28 @@ def index(request):
         return HttpResponse("Success")
     else:
         filesNameList = os.listdir(allFileDirRoot)
-        return render(request, "index.html", {"filesNameList":filesNameList})
+        pager = Paginator(filesNameList, 2)
+        if int(page) < 1:
+            page = 1
+        else:
+            page = int(page)
+        try:
+            prePageData = pager.page(page)
+        except EmptyPage:
+            prePageData = pager.page(pager.num_pages)
+        begin = (page - int(math.ceil(10.0 / 2)))
+        if begin < 1:
+            begin = 1
+        end = begin + 9
+        if end > pager.num_pages:
+            end = pager.num_pages
+        if end <= 10:
+            begin = 1
+        else:
+            begin = end - 9
+        pageList = range(begin, end + 1)
+        return render(request, "index.html", {'prePageData': prePageData,
+                                              'pageList': pageList})
 
 
 # Create your views here.
