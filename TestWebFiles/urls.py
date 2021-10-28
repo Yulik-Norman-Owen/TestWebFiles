@@ -16,11 +16,10 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, re_path
-
 from TestWebFiles import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^page=(?P<page>\d*)$', views.index, name="index"),
+    url(r'^files/page=(?P<page>\d*)$', views.index, name="index"),
     re_path('download/(?P<fileName>.*)$', views.fileDown, name="download"),
 ]
