@@ -26,7 +26,7 @@
                     <a href="{% url 'index'  n  %}">{{ n }}</a> &emsp;
                     {% endfor %}
                     {% if prePageData.has_next %}
-                    <a href="{% url 'index' prePageData.next_page_number  id='next' %}">Next Page</a>
+                    <a href="{% url 'index' prePageData.next_page_number %}" id='next'>Next Page</a>
                     {% endif %}&emsp;
                     <br>
                     <br>
