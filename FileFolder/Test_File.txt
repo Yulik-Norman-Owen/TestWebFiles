@@ -1,0 +1,46 @@
+服务器Master
+cd /usr/local/Cellar/hadoop
+./sbin/stop-all.sh
+./sbin/mr-jobhistory-daemon.sh stop historyserver
+sudo rm -R logs
+sudo rm -R data
+sudo mkdir data
+sudo mkdir data/tmp
+sudo mkdir data/name
+sudo mkdir data/datanode
+hdfs namenode -format
+
+服务器Slave1:
+cd /usr/local/Cellar/hadoop
+sudo rm -R logs
+sudo rm -R data
+sudo mkdir data
+sudo mkdir data/tmp
+sudo mkdir data/name
+sudo mkdir data/datanode
+hdfs namenode -format
+
+服务器Master:
+./sbin/start-all.sh
+./sbin/mr-jobhistory-daemon.sh start historyserver
+./sbin/stop-all.sh
+./sbin/mr-jobhistory-daemon.sh stop historyserver
+
+改slave1的clusterID和master一致
+hdfs dfs -mkdir /spark-app-history
+hdfs dfs -mkdir /hbase-data
+
+各个权限
+chown -R root ./.ssh
+chmod 700 ./.ssh
+chmod 644 ./.ssh/authorized_keys
+
+datanode的ID
+/usr/local/Cellar/hadoop/data/name/current/VERSION
+
+netstat -nltp
+
+hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.1.jar pi 10 10
+
+进程看短端口
+netstat -nap | grep 进程id
