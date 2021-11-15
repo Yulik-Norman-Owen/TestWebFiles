@@ -15,6 +15,12 @@
     {% for fileName in  prePageData%}
         <p>
             <a href="{% url 'download' fileName%}" name="fileToDownload">{{fileName}}</a>
+            &emsp;&emsp;&emsp;&emsp;
+            {% ifequal fileName "Little_Nightmare.txt" %}
+                <label name="language">Chinese</label>
+            {% else %}
+                <label name="language">English</label>
+            {% endifequal %}
         </p>
     {% endfor %}
                 <div>
